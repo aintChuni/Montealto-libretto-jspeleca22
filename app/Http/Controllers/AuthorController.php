@@ -20,10 +20,14 @@ class AuthorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255']);
+        $request->validate(['name' => 'required|string|max:255'],
+        ['name.required' => 'The author name is required.']
+    );
         Author::create($request->all());
-        return redirect()->route('authors.index');
-    }
+        return redirect()
+        ->route('authors.index')
+        ->with('success', 'Author created successfully.');
+}
 
     public function edit(Author $author)
     {
@@ -32,15 +36,20 @@ class AuthorController extends Controller
 
     public function update(Request $request, Author $author)
     {
-        $request->validate(['name' => 'required|string|max:255']);
+        $request->validate(['name' => 'required|string|max:255'],
+        ['name.required' => 'The author name is required.']
+    );
         $author->update($request->all());
-        return redirect()->route('authors.index');
-    }
+           return redirect()
+        ->route('authors.index', $author->id)
+        ->with('success', 'Author updated successfully.');
+}
 
     public function destroy(Author $author)
     {
         $author->delete();
-        return redirect()->route('authors.index');
+        return redirect()->route('authors.index')
+        ->with('success','Author deleted successfully.');
     }
 }
 

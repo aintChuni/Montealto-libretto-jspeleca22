@@ -11,7 +11,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::with('author', 'genres')->get();
+        $books = Book::with('author', 'genres', 'reviews')->get();
         return view('books.index', compact('books'));
     }
 
@@ -28,12 +28,18 @@ class BookController extends Controller
             'title' => 'required|string|max:255',
             'author_id' => 'required|exists:authors,id',
             'genres' => 'required|array',
-        ]);
+             ],
+            ['title.required' => 'The title Must not be Empty.',
+            'author_id.required' => 'The author Must not be Empty.',
+            'genres.required' => 'The genre Must not be Empty.'
+            ]
+    );
 
         $book = Book::create($request->only('title', 'author_id'));
         $book->genres()->sync($request->genres);
 
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')
+        ->with('success','Book created successfully.');
     }
 
     public function show(Book $book)
@@ -55,18 +61,25 @@ class BookController extends Controller
             'title' => 'required|string|max:255',
             'author_id' => 'required|exists:authors,id',
             'genres' => 'required|array',
-        ]);
+            ],
+            ['title.required' => 'The title Must not be Empty.',
+            'author_id.required' => 'The author Must not be Empty.',
+            'genres.required' => 'The genre Must not be Empty.'
+            ]
+    );
 
         $book->update($request->only('title', 'author_id'));
         $book->genres()->sync($request->genres);
 
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')
+        ->with('success','Book updated successfully.');
     }
 
     public function destroy(Book $book)
     {
         $book->delete();
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')
+        ->with('success','Book deleted successfully.');
     }
 }
 
