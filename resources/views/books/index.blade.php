@@ -61,4 +61,9 @@
 @empty
     <div class="alert alert-info">No books found. Add one to get started.</div>
 @endforelse
+<div class="text-center mt-4">
+    <div class="d-flex justify-content-center">
+        {{ $books->links('pagination::bootstrap-5') }}
+    </div>
+</div>
 @endsection

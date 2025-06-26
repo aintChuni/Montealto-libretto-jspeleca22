@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="{{ url()->previous() }}" class="btn btn-outline-secondary mt-2 mb-3">← Back</a>
+<a href="{{ route('books.index') }}" class="btn btn-outline-secondary mt-2 mb-3">← Back</a>
 <h2>{{ $book->title }}</h2>
 <p><strong>Author:</strong> {{ $book->author->name }}</p>
 

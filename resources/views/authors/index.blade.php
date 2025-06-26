@@ -55,4 +55,9 @@
 @empty
     <div class="alert alert-info">No authors found. Add your first author above.</div>
 @endforelse
+<div class="text-center mt-4">
+    <div class="d-flex justify-content-center">
+        {{ $authors->links('pagination::bootstrap-5') }}
+    </div>
+</div>
 @endsection

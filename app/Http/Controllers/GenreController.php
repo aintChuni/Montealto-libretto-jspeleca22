@@ -9,7 +9,7 @@ class GenreController extends Controller
 {
     public function index()
     {
-        $genres = Genre::with('books')->get();
+        $genres = Genre::with('books')->paginate(5);
         return view('genres.index', compact('genres'));
     }
 
@@ -20,9 +20,12 @@ class GenreController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255']);
+        $request->validate(['name' => 'required|string|max:255'],
+    ['name.required'=> 'Genre name must not be Empty']
+    );
         Genre::create($request->all());
-        return redirect()->route('genres.index');
+        return redirect()->route('genres.index')
+        ->with('success','Genre successfully Created');;
     }
 
     public function edit(Genre $genre)
@@ -32,15 +35,20 @@ class GenreController extends Controller
 
     public function update(Request $request, Genre $genre)
     {
-        $request->validate(['name' => 'required|string|max:255']);
+        $request->validate(['name' => 'required|string|max:255'],
+        ['name.required'=> 'Genre name must not be Empty']
+    );
         $genre->update($request->all());
-        return redirect()->route('genres.index');
+        return redirect()->route('genres.index')
+        ->with('success','Genre successfully updated');
+        ;
     }
 
     public function destroy(Genre $genre)
     {
         $genre->delete();
-        return redirect()->route('genres.index');
+        return redirect()->route('genres.index')
+        ->with('success','Genre successfully deleted');
     }
 }
 

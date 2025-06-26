@@ -35,4 +35,9 @@
 @empty
     <div class="alert alert-info">There are no reviews yet.</div>
 @endforelse
+<div class="text-center mt-4">
+    <div class="d-flex justify-content-center">
+        {{ $reviews->links('pagination::bootstrap-5') }}
+    </div>
+</div>
 @endsection

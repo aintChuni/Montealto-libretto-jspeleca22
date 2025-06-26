@@ -43,4 +43,9 @@
 @empty
     <div class="alert alert-info">No genres found. Add one to get started.</div>
 @endforelse
+<div class="text-center mt-4">
+    <div class="d-flex justify-content-center">
+        {{ $genres->links('pagination::bootstrap-5') }}
+    </div>
+</div>
 @endsection
