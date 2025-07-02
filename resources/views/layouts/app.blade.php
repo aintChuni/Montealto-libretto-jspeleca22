@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
     <meta charset="UTF-8">
     <title>Library CRUD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -15,7 +14,7 @@
         }
         .nav-link.active {
             font-weight: bold;
-            color:rgb(255, 255, 255) !important;
+            color: #fff !important;
         }
     </style>
 </head>
@@ -24,13 +23,21 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ route('books.index') }}">📚 Library</a>
-            <div>
-                <div class="nav nav-pills">
+
+            <div class="d-flex align-items-center">
+                <div class="nav nav-pills me-3">
                     <a href="{{ route('books.index') }}" class="nav-link {{ request()->is('books*') ? 'active' : '' }}">Books</a>
                     <a href="{{ route('authors.index') }}" class="nav-link {{ request()->is('authors*') ? 'active' : '' }}">Authors</a>
                     <a href="{{ route('genres.index') }}" class="nav-link {{ request()->is('genres*') ? 'active' : '' }}">Genres</a>
                     <a href="{{ route('reviews.index') }}" class="nav-link {{ request()->is('reviews*') ? 'active' : '' }}">Reviews</a>
                 </div>
+
+                @auth
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                </form>
+                @endauth
             </div>
         </div>
     </nav>
