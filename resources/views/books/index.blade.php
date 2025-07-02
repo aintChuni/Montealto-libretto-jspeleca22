@@ -51,7 +51,7 @@
             <div class="d-flex gap-2">
                 <a href="{{ route('books.show', $book->id) }}" class="btn btn-outline-success btn-sm">View</a>
                 <a href="{{ route('books.edit', $book->id) }}" class="btn btn-outline-warning btn-sm">Edit</a>
-                <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                <form action="{{ route('books.destroy', $book->id) }}" method="POST">
                     @csrf @method('DELETE')
                     <button class="btn btn-outline-danger btn-sm">Delete</button>
                 </form>

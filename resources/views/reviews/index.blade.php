@@ -25,7 +25,7 @@
             <div class="d-flex gap-2">
                 <a href="{{ route('reviews.edit', $review->id) }}" class="btn btn-outline-warning btn-sm">Edit</a>
 
-                <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');">
+                <form action="{{ route('reviews.destroy', $review->id) }}" method="POST">
                     @csrf @method('DELETE')
                     <button class="btn btn-outline-danger btn-sm">Delete</button>
                 </form>

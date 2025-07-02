@@ -44,7 +44,7 @@
 
             <div class="d-flex gap-2">
                 <a href="{{ route('authors.edit', $author->id) }}" class="btn btn-outline-warning btn-sm">Edit</a>
-                <form action="{{ route('authors.destroy', $author->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this author?');">
+                <form action="{{ route('authors.destroy', $author->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-outline-danger btn-sm">Delete</button>
