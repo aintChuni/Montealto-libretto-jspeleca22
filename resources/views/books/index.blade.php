@@ -6,6 +6,13 @@
     <a href="{{ route('books.create') }}" class="btn btn-primary">+ Add Book</a>
 </div>
 
+@if (session('status'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         ✅ {{ session('success') }}

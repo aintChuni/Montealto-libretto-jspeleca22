@@ -18,7 +18,7 @@ class LoginController extends Controller
         $user->tokens()->delete();
         $user->createToken('web-token', ['*'])->plainTextToken;
 
-        return redirect('/books');
+        return redirect('/books')->with('status', 'You have successfully logged in!');
     }
 
     public function register(Request $request)
