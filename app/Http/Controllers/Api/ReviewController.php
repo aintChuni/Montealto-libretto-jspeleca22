@@ -1,7 +1,7 @@
 <?php
+namespace App\Http\Controllers\Api;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -11,13 +11,7 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = Review::with('book')->paginate(5);
-        return view('reviews.index', compact('reviews'));
-    }
-
-    public function create()
-    {
-        $books = Book::all();
-        return view('reviews.create', compact('books'));
+        return response()->json($reviews);
     }
 
     public function store(Request $request)
@@ -26,20 +20,24 @@ class ReviewController extends Controller
             'book_id' => 'required|exists:books,id',
             'content' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
-        ],
-             ['book_id.required' => 'The title Must not be Empty.',
-            'content.required' => 'The Review Content Must not be Empty.',
-            'rating.required' => 'There Must be Rating.'
-            ]
-    );
+        ], [
+            'book_id.required' => 'The book is required.',
+            'content.required' => 'The review content must not be empty.',
+            'rating.required' => 'There must be a rating.',
+        ]);
 
-        Review::create($request->only('book_id', 'content', 'rating'));
-        return redirect()->route('reviews.index')->with('success', 'Review added successfully.');
+        $review = Review::create($request->only('book_id', 'content', 'rating'));
+
+        return response()->json([
+            'message' => 'Review added successfully.',
+            'review' => $review,
+        ], 201);
     }
 
-    public function edit(Review $review)
+    public function show(Review $review)
     {
-        return view('reviews.edit', compact('review'));
+        $review->load('book');
+        return response()->json($review);
     }
 
     public function update(Request $request, Review $review)
@@ -47,22 +45,25 @@ class ReviewController extends Controller
         $request->validate([
             'content' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
-        ],
-        ['content.required' => 'The Review Content Must not be Empty.',
-            'rating.required' => 'There Must be Rating.'
-            ]
-    );
+        ], [
+            'content.required' => 'The review content must not be empty.',
+            'rating.required' => 'There must be a rating.',
+        ]);
 
         $review->update($request->only('content', 'rating'));
 
-        return redirect()
-            ->route('reviews.edit', $review->id)
-            ->with('success', 'Review updated successfully.');
+        return response()->json([
+            'message' => 'Review updated successfully.',
+            'review' => $review,
+        ]);
     }
 
     public function destroy(Review $review)
     {
         $review->delete();
-        return back()->with('success', 'Review deleted successfully.');
+
+        return response()->json([
+            'message' => 'Review deleted successfully.',
+        ]);
     }
 }

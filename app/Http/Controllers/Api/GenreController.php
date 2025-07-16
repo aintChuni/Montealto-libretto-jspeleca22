@@ -1,7 +1,7 @@
 <?php
+namespace App\Http\Controllers\Api;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 
@@ -10,45 +10,55 @@ class GenreController extends Controller
     public function index()
     {
         $genres = Genre::with('books')->paginate(5);
-        return view('genres.index', compact('genres'));
-    }
-
-    public function create()
-    {
-        return view('genres.create');
+        return response()->json($genres);
     }
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255'],
-    ['name.required'=> 'Genre name must not be Empty']
-    );
-        Genre::create($request->all());
-        return redirect()->route('genres.index')
-        ->with('success','Genre successfully Created');;
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ], [
+            'name.required' => 'Genre name must not be empty.',
+        ]);
+
+        $genre = Genre::create($request->all());
+
+        return response()->json([
+            'message' => 'Genre created successfully.',
+            'genre' => $genre,
+        ], 201);
     }
 
-    public function edit(Genre $genre)
+    public function show(Genre $genre)
     {
-        return view('genres.edit', compact('genre'));
+        $genre->load('books');
+        return response()->json($genre);
     }
 
     public function update(Request $request, Genre $genre)
     {
-        $request->validate(['name' => 'required|string|max:255'],
-        ['name.required'=> 'Genre name must not be Empty']
-    );
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ], [
+            'name.required' => 'Genre name must not be empty.',
+        ]);
+
         $genre->update($request->all());
-        return redirect()->route('genres.index')
-        ->with('success','Genre successfully updated');
-        ;
+
+        return response()->json([
+            'message' => 'Genre updated successfully.',
+            'genre' => $genre,
+        ]);
     }
 
     public function destroy(Genre $genre)
     {
         $genre->delete();
-        return redirect()->route('genres.index')
-        ->with('success','Genre successfully deleted');
+
+        return response()->json([
+            'message' => 'Genre deleted successfully.',
+        ]);
     }
 }
+
 
